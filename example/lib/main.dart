@@ -20,14 +20,16 @@ class _MyAppState extends State<MyApp> {
 
   Future<void> initPlatformState() async {
     final voice = XfSpeechPlugin.instance;
-    voice.initWithAppId(iosAppID: '5d4281f8', androidAppID: '5d4281f8');
+    voice.initWithAppId(iosAppID: '5d91c3c4', androidAppID: '5d91c3c4');
     final param = new XFVoiceParam();
     param.domain = 'iat';
     param.asr_ptt = '0';
     param.asr_audio_path = 'xme.pcm';
     param.result_type = 'plain';
-    param.voice_name = 'vixx';
-//    param.voice_name = 'xiaoyan';
+    //param.voice_name = 'vixx';
+    //param.voice_name = 'xiaoyan';
+    //param.voice_name = 'aisxping';
+    param.voice_name = 'aisjinger';
 
     voice.setParameter(param.toMap());
   }
@@ -44,19 +46,13 @@ class _MyAppState extends State<MyApp> {
             child: Text(iflyResultString),
           ),
         ),
-
         floatingActionButton: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             FloatingActionButton(
               onPressed: onTapDown,
               tooltip: 'Increment',
-              child: Icon(Icons.add),
-            ),
-            FloatingActionButton(
-              onPressed: onTapUp,
-              tooltip: 'Decrement',
-              child: Icon(Icons.remove),
+              child: Icon(Icons.play_arrow),
             ),
           ],
         ),
@@ -65,29 +61,37 @@ class _MyAppState extends State<MyApp> {
   }
 
   onTapDown() {
-    print("tap down");
+    iflyResultString = '你好少时间去健身卡';
 
-    iflyResultString = '';
-    final listen = XfSpeechListener(
-        onVolumeChanged: (volume) {
-          print('$volume');
-        },
-        onResults: (String result, isLast) {
-          if (result.length > 0) {
-            setState(() {
-              iflyResultString += result;
-              XfSpeechPlugin.instance.startSpeaking(
-                  string: "你刚才说了" + iflyResultString);
-            });
-          }
-        },
-        onCompleted: (Map<dynamic, dynamic> errInfo, String filePath) {
-          setState(() {
+    final listen = XfSpeechListener(onSpeakBegin: () {
+      print('开始播放');
+    }, onCompleted: (Map<dynamic, dynamic> map, String res) {
+      print('播放完成');
+    });
 
-          });
-        }
-    );
+    XfSpeechPlugin.instance.startSpeaking(
+        string: iflyResultString,
+        listener: XfSpeechListener(onSpeakBegin: () {
+          print('开始播放');
+        }, onSpeakEnd: () {
+          print('播放完成');
+        }));
+
+    /*
+    final listen = XfSpeechListener(onVolumeChanged: (volume) {
+      print('$volume');
+    }, onResults: (String result, isLast) {
+      if (result.length > 0) {
+        setState(() {
+          iflyResultString += result;
+          XfSpeechPlugin.instance.startSpeaking(string: iflyResultString);
+        });
+      }
+    }, onCompleted: (Map<dynamic, dynamic> errInfo, String filePath) {
+      setState(() {});
+    });
     XfSpeechPlugin.instance.startListening(listener: listen);
+    */
   }
 
   onTapUp() {

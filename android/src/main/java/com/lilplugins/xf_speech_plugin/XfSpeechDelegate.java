@@ -403,7 +403,8 @@ public class XfSpeechDelegate implements PluginRegistry.RequestPermissionsResult
 
         @Override
         public void onCompleted(SpeechError speechError) {
-            channel.invokeMethod("onCompleted", null);
+          
+            channel.invokeMethod("onSpeakEnd", null);
         }
 
         @Override

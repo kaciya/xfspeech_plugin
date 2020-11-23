@@ -205,7 +205,7 @@ static NSString * const _METHOD_IS_SPEAKING = @"isSpeaking";
 }
 
 - (void) onSpeakCancel{
-     [_channel invokeMethod:@"onSpeakCancel" arguments:NULL];
+     [_channel invokeMethod:@"onSpeakEnd" arguments:NULL];
 }
 
 - (void) onEvent:(int)eventType arg0:(int)arg0 arg1:(int)arg1 data:(NSData *)eventData{

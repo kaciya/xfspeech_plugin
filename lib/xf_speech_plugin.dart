@@ -5,11 +5,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 
 class XfSpeechPlugin {
-
   static final XfSpeechPlugin instance = XfSpeechPlugin._();
   XfSpeechPlugin._();
 
-  static const MethodChannel _channel = const MethodChannel('lilplugins.com/xf_speech_plugin');
+  static const MethodChannel _channel =
+      const MethodChannel('lilplugins.com/xf_speech_plugin');
 
   // the following three methods would be called to change for both SpeechRecognizer & SpeechSynthesizer
   static const String _METHOD_INITWITHAPPID = 'initWithAppId';
@@ -28,26 +28,28 @@ class XfSpeechPlugin {
   static const String _METHOD_STOP_SPEAKING = 'stopSpeaking';
   static const String _METHOD_IS_SPEAKING = 'isSpeaking';
 
-  Future<void> initWithAppId({@required String iosAppID, @required String androidAppID}) async {
+  Future<void> initWithAppId(
+      {@required String iosAppID, @required String androidAppID}) async {
     assert(iosAppID != null && iosAppID.isNotEmpty);
     assert(androidAppID != null && androidAppID.isNotEmpty);
     return _channel.invokeMethod(
-      _METHOD_INITWITHAPPID, Platform.isIOS ? iosAppID : androidAppID,
+      _METHOD_INITWITHAPPID,
+      Platform.isIOS ? iosAppID : androidAppID,
     );
   }
 
   Future<void> setParameter(Map<String, dynamic> param) async {
-     _channel.invokeMethod(_METHOD_SETPARAMETER, param);
+    _channel.invokeMethod(_METHOD_SETPARAMETER, param);
   }
 
   Future<void> dispose() async {
-     _channel.invokeMethod(_METHOD_DISPOSE);
+    _channel.invokeMethod(_METHOD_DISPOSE);
   }
 
   Future<void> startListening({XfSpeechListener listener}) async {
     _channel.setMethodCallHandler((MethodCall call) async {
-
-      if (call.method == 'onBeginOfSpeech' && listener?.onBeginOfSpeech != null) {
+      if (call.method == 'onBeginOfSpeech' &&
+          listener?.onBeginOfSpeech != null) {
         listener.onBeginOfSpeech();
       }
       if (call.method == 'onCancel' && listener?.onCancel != null) {
@@ -62,61 +64,66 @@ class XfSpeechPlugin {
       if (call.method == 'onResults' && listener?.onResults != null) {
         listener.onResults(call.arguments[0], call.arguments[1]);
       }
-      if (call.method == 'onVolumeChanged' && listener?.onVolumeChanged != null) {
+      if (call.method == 'onVolumeChanged' &&
+          listener?.onVolumeChanged != null) {
         listener.onVolumeChanged(call.arguments);
       }
-
     });
-     _channel.invokeMethod(_METHOD_STARTLISTENING);
+    _channel.invokeMethod(_METHOD_STARTLISTENING);
   }
 
-
   Future<void> stopListening() async {
-     _channel.invokeMethod(_METHOD_STOPLISTENING);
+    _channel.invokeMethod(_METHOD_STOPLISTENING);
   }
 
   Future<void> cancelListenning() async {
-     _channel.invokeMethod(_METHOD_CANCELLISTENING);
+    _channel.invokeMethod(_METHOD_CANCELLISTENING);
   }
 
-  Future<void> startSpeaking({@required String string, XfSpeechListener listener}) async{
-
-    _channel.setMethodCallHandler((MethodCall call) async{
+  Future<void> startSpeaking(
+      {@required String string, XfSpeechListener listener}) async {
+    _channel.setMethodCallHandler((MethodCall call) async {
       if (call.method == 'onSpeakBegin' && listener?.onSpeakBegin != null) {
         listener.onSpeakBegin();
       }
-      if (call.method == 'onBufferProgress' && listener?.onBufferProgress != null) {
-        listener.onBufferProgress(call.arguments[0],call.arguments[1],call.arguments[2],call.arguments[3]);
+      if (call.method == 'onBufferProgress' &&
+          listener?.onBufferProgress != null) {
+        listener.onBufferProgress(call.arguments[0], call.arguments[1],
+            call.arguments[2], call.arguments[3]);
       }
-      if (call.method == 'onSpeakProgress' && listener?.onSpeakProgress != null) {
-        listener.onSpeakProgress(call.arguments[0],call.arguments[1],call.arguments[2]);
+      if (call.method == 'onSpeakProgress' &&
+          listener?.onSpeakProgress != null) {
+        listener.onSpeakProgress(
+            call.arguments[0], call.arguments[1], call.arguments[2]);
       }
-      if (call.method == 'onVolumeChanged' && listener?.onVolumeChanged != null) {
+      if (call.method == 'onVolumeChanged' &&
+          listener?.onVolumeChanged != null) {
         listener.onVolumeChanged(call.arguments);
       }
       if (call.method == 'onSpeakPaused' && listener?.onSpeakPaused != null) {
         listener.onSpeakPaused();
       }
-      if (call.method == 'onCompleted' && listener?.onCompleted != null) {
-        listener.onCompleted(call.arguments[0],call.arguments[1]);
+
+      if (call.method == 'onSpeakEnd' && listener?.onSpeakEnd != null) {
+        listener.onSpeakEnd();
       }
       if (call.method == 'onSpeakResumed' && listener?.onSpeakResumed != null) {
         listener.onSpeakResumed();
       }
     });
-     _channel.invokeMethod(_METHOD_START_SPEAKING, string);
+    _channel.invokeMethod(_METHOD_START_SPEAKING, string);
   }
 
   Future<void> pauseSpeaking() async {
-     _channel.invokeMethod(_METHOD_PAUSE_SPEAKING);
+    _channel.invokeMethod(_METHOD_PAUSE_SPEAKING);
   }
 
   Future<void> resumeSpeaking() async {
-     _channel.invokeMethod(_METHOD_RESUME_SPEAKING);
+    _channel.invokeMethod(_METHOD_RESUME_SPEAKING);
   }
 
   Future<void> stopSpeaking() async {
-     _channel.invokeMethod(_METHOD_STOP_SPEAKING);
+    _channel.invokeMethod(_METHOD_STOP_SPEAKING);
   }
 
   Future<bool> isSpeaking() async {
@@ -128,7 +135,7 @@ class XfSpeechPlugin {
   }
 }
 
-class XfSpeechListener{
+class XfSpeechListener {
   VoidCallback onBeginOfSpeech;
   VoidCallback onEndOfSpeech;
   VoidCallback onCancel;
@@ -140,23 +147,23 @@ class XfSpeechListener{
   VoidCallback onSpeakResumed;
   VoidCallback onSpeakPaused;
   VoidCallback onSpeakBegin;
+  VoidCallback onSpeakEnd;
   void Function(int p, int b, int e, String a) onBufferProgress;
   void Function(int p, int b, int e) onSpeakProgress;
 
-  XfSpeechListener({
-    this.onBeginOfSpeech,
-    this.onResults,
-    this.onVolumeChanged,
-    this.onEndOfSpeech,
-    this.onCompleted,
-    this.onCancel,
-
-    this.onSpeakResumed,
-    this.onSpeakBegin,
-    this.onSpeakPaused,
-    this.onBufferProgress,
-    this.onSpeakProgress
-  });
+  XfSpeechListener(
+      {this.onBeginOfSpeech,
+      this.onResults,
+      this.onVolumeChanged,
+      this.onEndOfSpeech,
+      this.onCompleted,
+      this.onCancel,
+      this.onSpeakResumed,
+      this.onSpeakBegin,
+      this.onSpeakPaused,
+      this.onSpeakEnd,
+      this.onBufferProgress,
+      this.onSpeakProgress});
 }
 
 class XFVoiceParam {
