@@ -196,12 +196,17 @@ static NSString * const _METHOD_IS_SPEAKING = @"isSpeaking";
      [_channel invokeMethod:@"onSpeakProgress" arguments:@[@(progress), @(beginPos), @(endPos)]];
 }
 
+
 - (void) onSpeakPaused{
      [_channel invokeMethod:@"onSpeakPaused" arguments:NULL];
 }
 
 - (void) onSpeakResumed{
      [_channel invokeMethod:@"onSpeakResumed" arguments:NULL];
+}
+
+- (void) onCompleted:(IFlySpeechError*) error{
+      [_channel invokeMethod:@"onSpeakEnd" arguments:null];
 }
 
 - (void) onSpeakCancel{
