@@ -93,6 +93,9 @@ public class XfSpeechPlugin implements MethodCallHandler{
       case METHOD_CALL_STOPSPEAKING:
         delegate.stopSpeaking(call, result);
         break;
+      case METHOD_CALL_ISSPEAKING:
+        delegate.isSpeaking(call, result);
+        break;
 
       default:
         throw new IllegalArgumentException("Unknown method " + call.method);

@@ -74,6 +74,10 @@ class _MyAppState extends State<MyApp> {
         string: iflyResultString,
         listener: XfSpeechListener(onSpeakBegin: () {
           print('开始播放');
+          Future.delayed(Duration(seconds: 1), () async {
+            bool isSpeaking = await XfSpeechPlugin.instance.isSpeaking();
+            print(isSpeaking);
+          });
         }, onSpeakProgress: (int i, int i1, int i2) {
           print('播放进度 $i $i1 $i2');
         }));

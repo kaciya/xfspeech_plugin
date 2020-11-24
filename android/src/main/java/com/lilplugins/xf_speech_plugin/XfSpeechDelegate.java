@@ -365,6 +365,21 @@ public class XfSpeechDelegate implements PluginRegistry.RequestPermissionsResult
         pendingResult.success(null);
     }
 
+    public boolean isSpeaking(MethodCall call, MethodChannel.Result result) {
+        methodCall = call;
+        pendingResult = result;
+
+        if (synthesizer == null){
+            Log.e(TAG, "SpeechSynthesize hasn't been init");
+            pendingResult.error("","SpeechSynthesize hasn't been init", "SpeechSynthesize is null");
+            pendingResult.success(false);
+        }
+        else {
+           boolean isSpeaking = synthesizer.isSpeaking();
+           pendingResult.success(isSpeaking);
+        }
+    }
+
 
     private SynthesizerListener mSynthesizerListener = new SynthesizerListener() {
         @Override

@@ -66,6 +66,9 @@ static NSString * const _METHOD_IS_SPEAKING = @"isSpeaking";
     else if ([_METHOD_STOP_SPEAKING isEqualToString:call.method]) {
         [self stopSpeaking];
     }
+     else if ([_METHOD_IS_SPEAKING isEqualToString:call.method]) {
+       result([self isSpeaking]);
+    }
     
     
     else {
@@ -127,6 +130,10 @@ static NSString * const _METHOD_IS_SPEAKING = @"isSpeaking";
     if ([[IFlySpeechSynthesizer sharedInstance] isSpeaking]) {
     }
     [[IFlySpeechSynthesizer sharedInstance] stopSpeaking];
+}
+
+- (BOOL)isSpeaking {
+    return [[IFlySpeechSynthesizer sharedInstance] isSpeaking]; 
 }
 
 #pragma mark - IFlySpeechRecognizerDelegate
