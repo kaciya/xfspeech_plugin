@@ -67,7 +67,7 @@ static NSString * const _METHOD_IS_SPEAKING = @"isSpeaking";
         [self stopSpeaking];
     }
      else if ([_METHOD_IS_SPEAKING isEqualToString:call.method]) {
-       result([self isSpeaking]);
+       result(@([self isSpeaking]));
     }
     
     
