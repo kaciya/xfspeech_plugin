@@ -63,18 +63,19 @@ class _MyAppState extends State<MyApp> {
   onTapDown() {
     iflyResultString = '你好少时间去健身卡';
 
-    final listen = XfSpeechListener(onSpeakBegin: () {
-      print('开始播放');
-    }, onCompleted: (Map<dynamic, dynamic> map, String res) {
-      print('播放完成');
-    });
+    // final listen = XfSpeechListener(onSpeakBegin: () {
+    //   print('开始播放');
+    // },
+    // onSpeakProgress: () {
+    //   print('播放完成');
+    // });
 
     XfSpeechPlugin.instance.startSpeaking(
         string: iflyResultString,
         listener: XfSpeechListener(onSpeakBegin: () {
           print('开始播放');
-        }, onSpeakEnd: () {
-          print('播放完成');
+        }, onSpeakProgress: (int i, int i1, int i2) {
+          print('播放进度 $i $i1 $i2');
         }));
 
     /*

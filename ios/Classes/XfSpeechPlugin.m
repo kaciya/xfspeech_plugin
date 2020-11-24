@@ -205,10 +205,6 @@ static NSString * const _METHOD_IS_SPEAKING = @"isSpeaking";
      [_channel invokeMethod:@"onSpeakResumed" arguments:NULL];
 }
 
-- (void) onCompleted:(IFlySpeechError*) error{
-      [_channel invokeMethod:@"onSpeakEnd" arguments:null];
-}
-
 - (void) onSpeakCancel{
      [_channel invokeMethod:@"onSpeakEnd" arguments:NULL];
 }
